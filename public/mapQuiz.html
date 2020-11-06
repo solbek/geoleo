@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html>
+     <head>
+          <meta charset="utf-8" />
+          <title>Europa</title>
+          <link rel="stylesheet" type="text/css" href="style.css">
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+     
+          <link href="jqvmap-master/dist/jqvmap.css" media="screen" rel="stylesheet" type="text/css">
+          <script type="text/javascript" src="jqvmap-master/dist/jquery.vmap.js"></script>
+          <script type="text/javascript" src="jqvmap-master/dist/maps/jquery.vmap.world.js" charset="utf-8"></script>
+          <script type="text/javascript" src="jqvmap-master/dist/maps/jquery.vmap.europe.js"></script>
+          <script type="text/javascript" src="jqvmap-master/dist/maps/jquery.vmap.asia.js"></script>
+     </head>
+
+     <body id="mapQuiz_body" class="geoleo_body quiz_body">
+          <div id="mainMenu"></div>
+          <div id="mapQuizPage"></div>
+
+          <template id="startMapQuizTemp">
+               <div id="mapQuiz-dropdown" class="dropdown quiz-dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Velg kategori
+                         <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                         <li class="continentChoice"><a>Europa</a></li>
+                         <li class="continentChoice"><a>Asia</a></li>
+                         <li class="continentChoice"><a>USA (kommer)</a></li>
+                         <li class="continentChoice"><a>Alle</a></li>
+                    </ul>
+               </div>
+               <div id="buffer" style="height: 100px;"></div>
+          </template>
+
+          <template id="euroMapTemp">
+               <h4 id="mapQ-txt" class="normal-txt" style="font-size: 18px;"></h4>
+               <div id="euroMap" style="width: 600px; height: 400px;"></div>
+          </template>
+          <template id="asiaMapTemp">
+               asia
+               <div id="asiaMap" style="width: 600px; height: 400px;"></div>
+          </template>
+
+     </body>
+     <script>
+     /*-------------------- Load main menu -------------------*/
+          $('#mainMenu').load('menu.html', function () {
+               $('#menuTitle').fadeIn().html('Kart quiz <span class="caret"></span>')
+               $('#headerTxt').fadeIn().css('margin-left', '0')
+               $('#headerTxt').fadeIn().append('<b style="color:darkmagenta"> QUIZ</b>')
+          });
+     var questionsPool;
+     /*-------------------- view temp -------------------*/
+          var cont = document.getElementById("mapQuizPage");
+          function viewTemp(id, cont) {
+               cont.innerHTML = "";
+               let temp = document.getElementById(id);
+               let clone = temp.content.cloneNode(true);
+               cont.appendChild(clone);
+          }
+          viewTemp("startMapQuizTemp", cont);
+
+          var continent;
+          var questionsPool;
+          $(".continentChoice").click(function () {
+               continent = $('a', this).html()
+               getDataFromDb()
+               if(continent == 'Europa'){
+                    viewTemp("euroMapTemp", cont);
+                    showEuroMap(questionsPool)
+               }
+
+               if (continent == 'Asia') {
+                    viewTemp("asiaMapTemp", cont);
+                    showAsiaMap()
+               }               
+          });
+
+     /*-------------------- get data -------------------*/
+          async function getDataFromDb() {
+               let cfg = {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json; charset=utf-8"}
+               }
+               try {
+                    let response = await fetch(`/app/countries`, cfg);
+                    data = await response.json();
+                    randomQuiz();
+
+               } catch (err) {
+                    console.log(err);
+               }
+          }         
+          
+          function randomQuiz(){   
+               var currentSet = data.filter(function (set) {
+                    return set.category == continent;
+               });
+               
+               var shuffled = currentSet.sort(() => 0.5 - Math.random())
+
+               // Get sub-array of first n elements after shuffled
+               questionsPool = shuffled.slice(0, currentSet.length);
+               
+          }
+      
+     /*-------------------- Map Europa -------------------*/
+          function showEuroMap(questionsPool) {
+               var pool = questionsPool;
+               console.log(questionsPool)
+               jQuery('#euroMap').vectorMap({
+                    map: 'europe_en',
+                    backgroundColor: '#fff',
+                    color: '#c4c4c4',
+                    hoverColor: '#8b008b',
+                    selectedColor: '#8b008b',
+                    enableZoom: false,
+                    onRegionClick: function (element, code, region) {
+                         var myClick = code;
+                         checkMe(myClick);
+                    }
+               });
+               function checkMe (myClick){
+                    
+                    if (myClick === questionsPool[2].code) {
+                         console.log(myClick)
+                    }
+                    else {console.log("fail")}
+                    
+               }
+               
+               var current;
+               /*for(let i=0; i<questionsPool.length; i++){
+               console.log("loop")
+               current
+               $("#mapQ-txt").html("Klikk på " + questionsPool[i].name);
+               console.log(questionsPool[i].code)
+          }*/
+
+              
+               
+
+          }
+
+     /*-------------------- Map Asia -------------------*/
+          function showAsiaMap() {
+               jQuery('#asiaMap').vectorMap({
+                    map: 'asia_en',
+                    backgroundColor: '#fff',
+                    color: '#c4c4c4',
+                    hoverColor: '#8b008b',
+                    selectedColor: '#8b008b',
+                    enableZoom: false,
+                    showTooltip: true,
+                    onRegionClick: function (element, code, region) {
+                         var message = 'You clicked "'
+                              + region
+                              + '" which has the code: '
+                              + code.toUpperCase();
+
+                         console.log(message);
+                    }
+               });
+          }
+
+          
+     </script>
+</html>

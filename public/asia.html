@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Asia</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    </head>
+    
+    <body class="geoleo_body">
+        <div id="mainMenu"></div>
+        <div class="container" style="width: 100%;">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#asia-home-tab">Om Asia</a></li>
+                <li><a href="#asia-countries-tab">Alle land</a></li>
+                <li><a href="#asia-capital-tab">hovedstader</a></li>
+                <li><a href="#asia-flag-tab">Flagg</a></li>
+            </ul>
+    
+            <div class="tab-content">    
+                <div id="asia-home-tab" class="tab-pane fade in active">
+                    <p style="margin-top: 20px;">Asia er en verdensdel som består av den østlige delen av kontinentet Eurasia. Vestgrensen dannes av Uralfjellene ned til
+                    Svartehavet, kystlinjen rundt Tyrkia og sørover til Suez-kanalen. Rødehavet og Det indiske hav utgjør
+                    sørgrensen, mens Stillehavet er grensen mot øst. Asia utgjør ca. 29,4 prosent av jordens landområde og er
+                    dermed den største verdensdelen. Med over 60 prosent av jordens befolkning, over 4,3 milliarder mennesker, er den
+                    også den mest folkerike.<br><br>
+                        <span class="highlight">Høyeste fjell: </span>Mount Everest på 8848 moh.igger i fjellkjeden Himalaya, på grensen mellom Kina og Nepal. Alle de 100 høyeste fjellene i verden ligger i Asia.<br>
+                        <span class="highlight">Lengste elv: </span>Chang Jiang, Kina på 6300 km
+                    </p>
+                </div>
+    
+                <div id="asia-countries-tab" class="tab-pane fade">
+                    <h3 class="tab-head-txt">Alle land i Asia</h3>
+                    <div id="asia-countries-cont"></div>
+                </div>
+    
+                <div id="asia-capital-tab" class="tab-pane fade">
+                    <h3 class="tab-head-txt">Asias hovedstader</h3>
+                    <div id="asia-capital-cont"></div>
+                </div>
+    
+                <div id="asia-flag-tab" class="tab-pane fade">
+                    <h3 class="tab-head-txt">Asias flagg</h3>
+                    <div class="container-fluid">
+                        <div id="asia-flag-cont" class="row"></div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </body>
+
+<script>
+     /*-------------------- Load main menu -------------------*/
+    $('#mainMenu').load('menu.html', function () {
+        $('#menuTitle').fadeIn().html('Asia <span class="caret"></span>')
+    });
+
+    /*-------------------- Tabs -------------------*/
+    $(document).ready(function () {
+        $(".nav-tabs a").click(function () {
+            $(this).tab('show');
+        });
+    });
+
+        /*-------------------- get data -------------------*/
+    getDataFromDb();
+    var data;
+
+    async function getDataFromDb() {
+        let cfg = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        }
+        try {
+            let response = await fetch(`/app/countries`, cfg);
+            let obj = await response.json();
+            data = obj.filter(a => {return a.category === "Asia"})
+            data.sort((a, b) => a.name.localeCompare(b.name));
+            console.log(data)
+            showAsia(data); showFlags(); showCap();
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+/*-------------------- Vis land -------------------*/
+    function showAsia(val) {
+        var data = val;
+        for (var i = 0; i < data.length; i++) {
+            document.getElementById("asia-countries-cont").innerHTML +=
+                `<label  class="listText">${data[i].name} - ${data[i].capital}</label>
+                <button type="button" class="small-btn" data-toggle="modal" onclick="openModal(${i})" data-target="#myModal">Les mer</button><hr>
+                 `
+        }
+        $("#asia-countries-cont hr").last().hide()
+    }
+
+/*-------------------- Hovestater -------------------*/
+    function showCap() {
+        var sortCap = data.sort((a, b) => a.capital.localeCompare(b.capital));
+        for (var i = 0; i < sortCap.length; i++) {
+            document.getElementById("asia-capital-cont").innerHTML +=
+                ` <label  class="listText tooltip-txt" data-toggle="tooltip" data-placement="top"  title="${data[i].name}" >${data[i].capital}</label><br><hr>
+    `}
+        $('[data-toggle="tooltip"]').tooltip();
+        $("#asia-capital-cont hr").last().hide()
+    }
+
+/*-------------------- Vis flagg -------------------*/
+    function showFlags() {
+        for (var i = 0; i < data.length; i++) {
+            document.getElementById("asia-flag-cont").innerHTML +=
+                ` <div class="col-sm-4" style="height:220px">
+                <a data-toggle="tooltip" title="${data[i].name}">
+                <img src="${data[i].flag}" class="flag-img-sm" >
+            </a></div>
+        `
+        }
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+
+    function openModal(i) {
+        console.log(i)
+        $("#asia-countries-cont").append(
+            ` <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">${data[i].name}</h4>
+                    </div>
+                    <div class="modal-body">
+                            <img src="${data[i].flag}" class="flag-img-sm">
+                            <p><span class="highlight">hovedstad </span>${data[i].capital}</p>
+                            <p><span class="highlight">Valuta </span>${data[i].currency}</span>
+                            <p>${data[i].info}</p>
+                    </div>
+                    <div class="modal-footer"></div>
+                </div>
+            </div>
+        </div>`);
+    }
+
+    
+</script>
+    
+</html>
+

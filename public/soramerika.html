@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+     <meta charset="utf-8" />
+     <title>Sør-Amerika</title>
+     <link rel="stylesheet" type="text/css" href="style.css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+     <script src="/json/southamerica.js"></script>
+</head>
+
+<body class="geoleo_body">
+     <div id="mainMenu"></div>
+     <div class="container" style="width: 100%;"> 
+          <ul class="nav nav-tabs">
+               <li class="active"><a href="#southa-home-tab">Om Sør-Amerika</a></li>
+               <li><a href="#southa-countries-tab">Alle land</a></li>
+               <li><a href="#southa-capital-tab">hovedstader</a></li>
+               <li><a href="#southa-flag-tab">Flagg</a></li>
+          </ul>
+     </div>
+     <div class="tab-content">
+          <div id="southa-home-tab" class="tab-pane fade in active">
+               <p style="margin-top: 20px;">Det kommer<br><br>
+                    <span class="highlight">Høyeste fjell: </span>Kommer<br>
+                    <span class="highlight">Lengste elv: </span>Kommer
+               </p> 
+          </div>
+
+          <div id="southa-countries-tab" class="tab-pane fade">
+               <h3 class="tab-head-txt">Alle land i Sør-Amerika</h3>
+               <div id="southa-countries-cont"></div>
+          </div>
+          
+          <div id="southa-capital-tab" class="tab-pane fade">
+               <h3 class="tab-head-txt">Sør-Amerikas hovedstader</h3>
+               <div id="southa-capital-cont"></div>
+          </div>
+          
+          <div id="southa-flag-tab" class="tab-pane fade">
+               <h3 class="tab-head-txt">Sør-Amerikas flagg</h3>
+               <div class="container-fluid">
+                    <div id="southa-flag-cont" class="row"></div>
+               </div>
+          </div>
+          
+     </div>
+
+     <h1 id='test'></h1>
+
+</body>
+<script>
+
+/*-------------------- Load main menu -------------------*/
+     $('#mainMenu').load('menu.html', function () {
+          $('#menuTitle').fadeIn().html('Asia <span class="caret"></span>')
+     });
+
+/*-------------------- Tabs -------------------*/
+     $(document).ready(function () {
+          $(".nav-tabs a").click(function () {
+               $(this).tab('show');
+          });
+     });
+     /*-------------------- Load main menu -------------------*/
+    $('#mainMenu').load('menu.html', function () {
+        $('#menuTitle').fadeIn().html('Asia <span class="caret"></span>')
+    });
+
+    /*-------------------- Tabs -------------------*/
+    $(document).ready(function () {
+        $(".nav-tabs a").click(function () {
+            $(this).tab('show');
+        });
+    });
+
+/*-------------------- get data -------------------*/
+    getDataFromDb();
+    var data;
+
+    async function getDataFromDb() {
+        let cfg = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        }
+        try {
+            let response = await fetch(`/app/countries`, cfg);
+            let obj = await response.json();
+            data = obj.filter(a => {return a.category === "Sør-Amerika"})
+            data.sort((a, b) => a.name.localeCompare(b.name));
+            console.log(data)
+    
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
+
+
+
+          
+                         
+var url = 'https://en.wikipedia.org/w/index.php?title=List_of_South_American_countries_by_population&oldid=963883615';
+var urlTwo = 'https://en.wikipedia.org/w/api.php?action=parse&page=Wikipedia:List_of_South_American_countries_by_population&section=2&prop=text&origin=*'
+var myLink = 'http://en.wikipedia.org//w/api.php?action=query&format=json&prop=revisions&titles=Cat&formatversion=2&rvprop=content&origin=*'
+var coolLin = 'https://commons.wikimedia.org/w/api.php?action=query&titles=File:Sala%20de%20Conciertos,%20Berl%C3%ADn,%20Alemania,%202016-04-22,%20DD%2022-24%20HDR.jpg&prop=info'
+var ddd  = 'https://randomuser.me/api/?results=10'
+var greg = 'https://www.wikitable2json.com/api/v1/page/South_America?n=0'
+
+     /*then(function (response) {
+               return response.json();
+          })
+          .then(function (response) {
+               html_code = response["parse"]["text"]["*"];
+               parser = new DOMParser();
+               html = parser.parseFromString(html_code, "text/html");
+               var tables = html.querySelectorAll(".wikitable");
+               console.log(tables);
+          })
+     }
+
+     loadData();
+     async function loadData() { //method GET er default
+          let response = await fetch(greg, {
+               headers:
+                    'Access-Control-Allow-Origin: *',
+                    'Content-Type':'text/plain'
+          });
+          let data = await response.json();
+          console.log(data);
+     }
+
+     /*fetch('https://randomuser.me/api/?results=10')
+          .then((resp) => resp.json())
+          .then(function (data) {
+               //let authors = data.results;
+               console.log(data)
+          })
+          .catch(function (error) {
+               console.log(error);
+          }); */
+</script>
+</html>

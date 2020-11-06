@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+     <meta charset="utf-8" />
+     <title>GeoLeo</title>
+     <link rel="stylesheet" type="text/css" href="style.css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+     <script src="/json/southamerica.js"></script>
+</head>
+
+<body class="geoleo_body">
+     <div id="mainMenu"></div>
+     <div class="container" style="width: 100%;"> 
+          <ul class="nav nav-tabs">
+               <li class="active"><a href="#add-cont">Legg til land</a></li>
+               <li><a href="#change-cont">Gjør en endring</a></li>
+          </ul>
+     
+          <div class="tab-content" style="margin-top: 20px;">
+     
+               <div id="add-cont" class="tab-pane fade in active">
+                    <button id="btn-edit-start" class="normal-btn" onclick="start()">Start</button><span id="countMe" style="padding-left: 5px;"></span>
+                    <div id="editMe">
+                         <input id="inp-country" class="input-field" placeholder="Land"><br>
+                         <select id="inp-cat" class="input-field" placeholder="Verdensdel">
+                              <option value="Sør-Amerika">Sør-Amerika</option>
+                              <option value="Asia">Asia</option>
+                              <option value="Europa">Europa</option>
+                              <option value="Usa">Europa</option>
+                         </select><br>
+                         <input id="inp-img" class="input-field" placeholder="img url">
+                         <input id="inp-cap" class="input-field" placeholder="Hovedstat">
+                         <input id="inp-currency" class="input-field" placeholder="Valutta">
+                         <input id="inp-code" class="input-field" placeholder="Landskode">
+                         <textarea id="inp-txt" class="input-field  txt_area" placeholder="Info"></textarea>
+                         <button id="btn-edit-done" class="normal-btn" onclick="sendCountryToDb()">Ferdig!</button>
+                    </div>
+               </div>
+     
+               <div id="change-cont" class="tab-pane fade">
+                    <div id="editCont"></div>
+                    <template id="searchCountryTemp">                         
+                         <h3>Gjør en endring</h3>
+                         <input id="inp-country-edit" class="input-field" placeholder="Søk" style="width: 80%;">
+                         <button id="btn-search-country" class="normal-btn inpButton" onclick="findCountry()" >Velg!</button>
+                         <p id="notFoundTxt">Land finnes ikke</p>
+                    </template>
+
+                    <template id="changeThisTemp">
+                         <h3 id="thisCountryTxt"></h3>
+                         <p id="capTxt" class="normal-txt"></p>
+                         <img id="showFlagImg" style="width: 70px; margin-bottom: 15px;">
+                         <p class="labelTxt">Valutta</p>
+                         <input id="inpCurrencyEdit" class="input-field"><br>
+                         <p class="labelTxt">Info</p>
+                         <textarea id="infoTxtareaEdit" class="input-field" style="width: 70%; height: 140px;"></textarea><br>
+                         <button id="btn-edit-save" class="normal-btn" onclick="sendChangesToDb(thisCountry)">Lagre!</button>
+                         <button id="btn-edit-cancel" class="normal-btn" onclick="startAgain()">Avbryt!</button>
+                    </template>
+               </div>
+          </div>
+     
+</body>
+<script>
+     /*-------------------- Load main menu -------------------*/
+     $('#mainMenu').load('menu.html', function () {
+          $('#menuTitle').fadeIn().html('Rediger <span class="caret"></span>')
+          $("#notFoundTxt").hide();
+     });
+
+     /*-------------------- Tabs -------------------*/
+     $(document).ready(function () {
+          $(".nav-tabs a").click(function () {
+               $(this).tab('show');
+          });
+     });
+
+     /*-------------------- get json -------------------*/
+     var countries = []
+     for (var i=0; i< table.length; i++) {     
+          countries.push({
+               "name": Object.values(table[i])[2],
+               "capital": Object.values(table[i])[3]
+          })
+     }
+     console.log(countries)
+     var countMe = 1;
+     var x = 0;
+     function start (){
+          $("#countMe").html(1 + "/" + (countries.length - 1))
+          $('#inp-country').val(countries[0].name);
+          $('#inp-cap').val(countries[0].capital);
+          console.log("start " + x)
+     }
+
+     /*-------------------- Legg til land -------------------*/
+     function sendCountryToDb() {
+          x = 1
+          countMe = 2;
+          $("#countMe").html(countMe + "/" + (countries.length - 1));          
+          $('#inp-country').val(countries[x].name);
+          $('#inp-cap').val(countries[x].capital);
+         console.log(x)
+
+          let name = $('#inp-country').val();
+          let cat = $('#inp-cat').val();
+          let img = $('#inp-img').val();
+          let capital = $('#inp-cap').val();
+          let txt = $('#inp-txt').val();
+          let cur = $('#inp-currency').val(); 
+          let code = $('#inp-code').val();
+          console.log(name)
+          if (name.length > 1 && capital.length > 1) {
+               let request = {
+                    method: "POST",
+                    body: JSON.stringify({
+                         name: name,
+                         cat: cat,
+                         img: img,
+                         capital: capital,
+                         txt: txt ,
+                         cur: cur ,
+                         code: code,
+                         whatToDo: "new country"
+                    }),
+                    headers: {
+                         "Content-Type": "application/json; charset=utf-8"
+                    }
+               };
+               
+               fetch(`/app/new`, request).then(data => {
+                    if (data.status === 200) {
+                         return data.json();
+                         console.log(data)
+                    }
+               }).catch(err => {
+                    console.error(err);
+               });
+          }   
+          console.log(cur);         
+          countMe++
+          x++
+          if (x == countries.length) {
+               alert("ferdig")
+          }
+          //$('#inp-txt').val(""); $('#inp-currency').val(""); $('#inp-code').val("");
+     }
+
+     /*-------------------- Endre land -------------------*/
+     /*--- view temp ---*/
+          var cont = document.getElementById("editCont");
+          function viewTemp(id, cont) {
+               cont.innerHTML = "";
+               let temp = document.getElementById(id);
+               let clone = temp.content.cloneNode(true);
+               cont.appendChild(clone);
+          }
+          viewTemp("searchCountryTemp", cont);
+
+          function startAgain (){
+                viewTemp("searchCountryTemp", cont)
+          }
+
+     getDataFromDb();
+     var data;
+     async function getDataFromDb(){
+          let cfg = {
+               method: "GET",
+               headers: {"Content-Type": "application/json; charset=utf-8"}
+          }
+          try {
+               let response = await fetch(`/app/countries`, cfg);
+               data = await response.json();
+               data.sort((a, b) => a.name.localeCompare(b.name));
+
+          } catch (err) {
+               console.log(err);
+          }
+     } 
+
+     var thisCountry;
+     function findCountry(){
+          var val = $("#inp-country-edit").val();
+          var capitalize = val.substr(0, 1).toUpperCase() + val.substr(1);
+
+          thisCountry = data.find(({ name }) => name === capitalize);
+          console.log(thisCountry)
+
+          if(thisCountry){
+                viewTemp("changeThisTemp", cont);
+               $("#thisCountryTxt").html('Rediger <span>' + thisCountry.name + '</span>');
+               $("#capTxt").html('Hovedstat: ' + thisCountry.capital)
+               $("#showFlagImg").attr("src", thisCountry.flag)
+               $("#inpCurrencyEdit").val(thisCountry.currency)
+               $("#infoTxtareaEdit").html(thisCountry.info)
+          }else{
+               $("#notFoundTxt").show();
+               console.log("nooo")
+          }  
+          //thisCountry = $.grep(data, function (obj) { return obj.name === capitalize; })[0] 
+     }
+
+     function sendChangesToDb(){          
+          let changeCurInp = $('#inpCurrencyEdit').val();
+          let changeInfoInp = $('#infoTxtareaEdit').val();
+          
+          if (changeCurInp != thisCountry.currency) {
+              let currencyRequest = {
+                    method: "POST",
+                    body: JSON.stringify({
+                         name: thisCountry.name,
+                         currency: changeCurInp,
+                         whatToDo: "change currency"
+                    }),
+                    headers: {"Content-Type": "application/json; charset=utf-8"}
+               };
+               fetch(`/app/change`, currencyRequest).then(data => {
+                    if (data.status === 200) {
+                         return data.json();
+                         console.log("Jaa")
+                    }
+               }).catch(err => {
+                    console.error(err);
+               });
+          }    
+          
+          if (changeCurInp != thisCountry.currency || changeCurInp.length === 0 ) {
+              /* let infoRequest = {
+                    method: "POST",
+                    body: JSON.stringify({
+                         name: thisCountry.name,
+                         nfo: changeInfoInp, 
+                         whatToDo: "change info"
+                    }),
+                    headers: { "Content-Type": "application/json; charset=utf-8" }
+               };
+               fetch(`/app/change`, currencyRequest).then(data => {
+                    if (data.status === 200) {
+                         return data.json();
+                         console.log("Jaa")
+                    }
+               }).catch(err => {
+                    console.error(err);
+               });*/
+               console.error("tom");
+          } 
+     }
+
+
+</script>
+     

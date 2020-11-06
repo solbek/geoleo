@@ -1,0 +1,275 @@
+*{font-family: Arial, sans-serif;}
+
+.geoleo_body{
+  margin: 20px auto;
+  width: 650px;
+  padding: 10px;
+  border: 3px solid rgba(238, 134, 16, 0.863)
+}
+
+#quiz_body{
+  border:3px solid darkmagenta;
+  height: 350px;
+}
+
+#mapQuiz_body{
+  border:3px solid darkmagenta;
+}
+
+#quiz_body div, #mapQuiz_body #mainMenu, #mapQuiz-dropdown {
+  width: 400px;
+  margin: auto;
+}
+
+#myLogo{
+  width: 50px;
+  padding-left: 15px;
+  margin-bottom: 15px;
+}
+
+.tab-head-txt{
+  color: rgba(238, 134, 16, 0.863);
+  margin-bottom: 30px;
+   display: block;
+  font-size: 20px;
+  margin-top: 0.67em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+#headerTxt {
+  font-size: 36px;
+  margin-right: 18px;
+}
+
+.normal-txt{
+  font-size: 16px;
+}
+
+#thisCountryTxt span {
+  color: rgba(238, 134, 16, 0.863);
+  font-weight: 700;
+}
+
+.notWorking{
+  color: #a6a6a6 !important ;
+  cursor:not-allowed;
+}
+
+  /*------------- -----------------------*/
+
+.geoleo_body #index-img{
+  margin-top: 40px;
+  height: 100%;
+  width: 100%;
+}
+
+.btn-active{
+  background-color: rgb(46, 141, 153); 
+  border: none;
+}
+
+.normal-btn, .small-btn{
+  background-color: rgb(46, 141, 153); 
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+  
+#anw-btn {padding: 10px;}
+
+.small-btn{
+  padding: 2px 5px;
+  font-size: 12px;
+}
+.inpButton{
+  padding: 12px 10px !important;
+  margin-top:0; margin-bottom: 0;
+}
+
+.normal-btn:hover, .small-btn:hover{
+  background-color: rgb(0, 110, 124); 
+}
+
+.highlight{
+  color:rgb(46, 141, 153); 
+  font-weight: bold;
+}
+
+.stjerne{
+  color:rgb(46, 141, 153); 
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.click:hover{
+  color:rgb(46, 141, 153); 
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.input-field, .input-field:active {
+  margin-bottom: 15px;
+  background-color: #fff;
+  border: 2px solid rgb(46, 141, 153); 
+  padding: 6px 8px;
+  color: #000;
+  font-size: 20px;
+  width: 100%;
+}
+.highdddlight {background-color: aqua;}
+
+.txt_area{
+  height: 30%;  
+}
+
+.hide {display: none;}
+
+.container{
+  margin-bottom: 20px;
+}
+
+hr {margin: 10px 0 !important;}
+
+  /* --------------- Modal profil --------------------- */
+.listText{
+  font-size: 16px;
+  display: inline-block;
+}
+
+.flag-img-sm {width: 170px;}
+
+ /* --------------- Dropdown meny --------------------- */
+.btn-primary{
+  background-color:  rgb(196, 196, 196) !important;
+  border: rgb(196, 196, 196)  !important;
+}
+#menuTitle {color:#000}
+
+.dropdown-menu a:hover{
+  background-color: rgba(238, 134, 16, 0.863) !important;
+  color: #000 !important;
+}
+
+#mainMenu .dropdown-menu{
+  left: 150px;
+  top: 49px;
+}
+
+.quiz-dropdown .btn-primary{
+  background-color: darkmagenta !important;
+  border: darkmagenta !important;
+  padding: 15px 82px;
+  margin-top: 20px;
+  font-size: 20px;
+}
+
+.quiz-dropdown .dropdown-menu{
+  font-size: 16px;
+}
+
+.quiz-dropdown .dropdown-menu li {
+  width: 319px;
+}
+
+.quiz-dropdown .dropdown-menu a:hover{
+  background-color:darkmagenta !important;
+  color:#fff !important;
+  cursor: pointer;
+}
+
+ /* --------------- Faner-navtabs --------------------- */
+ .nav-tabs a{
+  color: rgb(46, 141, 153);
+ }
+
+  /* --------------- Tooltip --------------------- */
+
+.tooltip.top > .tooltip-arrow {
+    border-top: 5px solid rgba(238, 134, 16, 0.863) !important ;
+}
+
+.tooltip > .tooltip-inner {
+  background-color: #fff; 
+  color: #000; 
+  border: 3px solid rgba(238, 134, 16, 0.863);
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.tooltip-txt:hover{
+  color: rgba(238, 134, 16, 0.863);
+}
+
+
+/* --------------- Radio buttons --------------------- */
+/* The container */
+#quizRadioBtn .container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+#quizRadioBtn .container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+#quizRadioBtn .container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+#quizRadioBtn .container input:checked ~ .checkmark {
+  background-color: #ee8610;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+#quizRadioBtn .container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+#quizRadioBtn .container .checkmark:after {
+ 	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}

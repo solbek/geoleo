@@ -1,0 +1,2 @@
+- valutta kalkulator, eller omregning fra nok på hver land-modal box
+- oppgi tidsoner til land/viktige byer, legg inn et tidssonekart bilde

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+     <meta charset="utf-8" />
+     <title>Quiz</title>
+     <link rel="stylesheet" type="text/css" href="style.css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+     <link href="jqvmap-master/dist/jqvmap.css" media="screen" rel="stylesheet" type="text/css">
+     <script type="text/javascript" src="jqvmap-master/dist/jquery.vmap.js"></script>
+     <script type="text/javascript" src="jqvmap-master/dist/maps/jquery.vmap.world.js" charset="utf-8"></script>
+     <script type="text/javascript" src="jqvmap-master/dist/maps/jquery.vmap.europe.js"></script>
+</head>
+
+     <body id="quiz_body" class="geoleo_body quiz_body">
+          <div id="mainMenu"></div>
+          <div id="quizPage"></div>
+
+          <template id="startQuizTemp">
+               <p>Spør etter:</p>
+               <div id="quizRadioBtn">
+                    <label class="container">hovedstad
+                         <input id="capitalRadio" type="radio" name="selectQuizType" value="capital">
+                         <span class="checkmark"></span>
+                    </label>
+                    <label class="container">Land
+                         <input id="countryRadio" type="radio" name="selectQuizType" value="country">
+                         <span class="checkmark"></span>
+                    </label>
+               </div>
+               <div id="quiz-dropdown" class="dropdown quiz-dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Velg kategori
+                         <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                         <li class="continentChoice"><a class="continent">Europa</a></li>
+                         <li class="continentChoice"><a class="continent">Asia</a></li>
+                         <li class="continentChoice"><a class="continent">USA (kommer)</a></li>
+                         <li class="continentChoice"><a id="continentAll" >Alle (Kommer)</a></li>
+                    </ul>
+               </div>
+          </template>
+
+          <template id="quizTemp">
+               <br>
+               <span id="q-number" style="float: right;color:darkmagenta"> </span>
+               <p id="choosenContiTxt" class="normal-txt">Kontinent: <span></span></p>
+               <h4 id="q-txt" class="normal-txt" style="margin-top: 35px; font-size: 18px;"></h4>
+               <input id="anw-inp" class="input-field" style="width: 80%;">
+               <button id="anw-btn" class="normal-btn inpButton" onclick="checkMe()">Svar</button>
+               <p id="quiz-res-txt" class="normal-txt" style="margin-top: 10px;"></p>
+               <button id="next-btn" class="small-btn"  style="display: none;" onclick="next()">Neste</button>
+          </template>    
+
+          <template id="endQuizTemp">
+               <h3 style="color: darkmagenta;">Ferdig!</h3>
+               <p id="endScore"></p>
+               <button id="startAgain" onclick="restart()" class="normal-btn">Spill igjen</button>
+          </template>         
+     </body>
+
+     <script>
+     /*-------------------- Load main menu -------------------*/
+          $('#mainMenu').load('menu.html', function () {
+               $('#menuTitle').fadeIn().html('Quiz <span class="caret"></span>')
+               $('#headerTxt').fadeIn().css('margin-left','0')
+               $('#headerTxt').fadeIn().append ('<b style="color:darkmagenta"> QUIZ</b>')
+          });
+
+     /*-------------------- view temp -------------------*/
+          var cont = document.getElementById("quizPage");
+          function viewTemp(id, cont) {
+               cont.innerHTML = "";
+               let temp = document.getElementById(id);
+               let clone = temp.content.cloneNode(true);
+               cont.appendChild(clone);
+          }
+
+          viewTemp("startQuizTemp", cont);
+
+           /*$("input[type='radio']").click(function () {
+              var radioValue = $("input[name='selectQuizType']:checked").val();
+              if (radioValue) {
+                alert("Your are a - " + radioValue);
+              }
+            }) */
+
+          var radioVal;
+          var continent;
+          var continentAll;
+
+          $(".continentChoice").click(function () {
+              radioVal = $("input[name='selectQuizType']:checked").val();
+              continent = $('.continent', this).html()
+              continentAll = $('#continentAll', this).html()
+              viewTemp("quizTemp", cont);
+              $("#choosenContiTxt span").html(continent)
+              getDataFromDb();
+          });
+     
+     /*-------------------- get data -------------------*/
+          var data;
+          async function getDataFromDb() {
+               let cfg = {
+                    method: "GET",
+                    headers: {
+                         "Content-Type": "application/json; charset=utf-8"
+                    }
+               }
+               try {
+                    let response = await fetch(`/app/countries`, cfg);
+                    data = await response.json();
+                    data.sort((a, b) => a.name.localeCompare(b.name));
+                    randomQuiz(data);
+
+               } catch (err) {
+                    console.log(err);
+               }
+          }         
+
+          index = 0
+          var correct = 0
+          var wrong = 0
+          var numberOfQ = 3
+          $("#next-btn").hide()
+
+          function randomQuiz(val) {
+              var data = val;
+              $("#q-number").html(index + 1 + "/" + numberOfQ)
+
+              var currentSet = data.filter(function (set) {
+                return set.category == continent;
+              });
+
+              
+
+              //console.log(currentSet)
+          
+              var currentAll = data;
+              /*if(continentAll){
+                console.log(continentAll)
+                currentAll = data.filter(function (set) {
+                  return set.category == continent;
+                });  
+              }*/
+
+              var shuffled = currentSet.sort(() => 0.5 - Math.random())// Shuffle array
+              questionsPool = shuffled.slice(0, numberOfQ)
+              console.log(questionsPool)
+
+              if(radioVal =="capital"){             
+                $("#q-txt").html("Hvor er " + questionsPool[index].capital + " hovedstad?")
+              }
+
+              if(radioVal =="country"){
+                $("#q-txt").html("Hva er hovedstaden i " + questionsPool[index].name + "?")
+              }
+          }
+
+          function checkMe() {
+               $("#next-btn").show();
+               var capLowerCase = questionsPool[index].capital.toLowerCase();
+               var countryLowerCase = questionsPool[index].name.toLowerCase();
+
+               if ((capLowerCase || countryLowerCase) == $("#anw-inp").val()) {                    
+                    if (radioVal == "capital") {
+                      $("#quiz-res-txt").html("Riktig!")
+                    }
+                    if (radioVal == "country") {
+                      $("#quiz-res-txt").html("Riktig!")
+                    }
+                    $("#next-btn").show()
+                    console.log("rikit")
+                    correct++
+               }
+               else if ($("#anw-inp").val() == "") {
+                    $("#quiz-res-txt").html("Skriv et svar").css("color", "red")
+                    $("#next-btn").hide()
+               }
+               
+               else {
+                    if (radioVal == "capital") {
+                      $("#quiz-res-txt").html("Feil, riktig svar er " + questionsPool[index].name)
+                    }
+                    if(radioVal == "country") {
+                      $("#quiz-res-txt").html("Feil, riktig svar er " + questionsPool[index].capital)
+                    }
+                    
+                    $("#next-btn").show()
+                    wrong++
+                    console.log("inp: " + $("#anw-inp").val() + " = " + countryLowerCase )
+               }
+               console.log("Rette: " + correct + " Feil: " + wrong)
+               
+          }
+
+          $('#anw-inp').keypress(function (e) {
+               if (e.which == 13){
+                    checkMe();
+                    //return false;
+               }
+          });   
+
+          function next() {
+               index++
+               $("#q-number").html(index + 1 + "/" + numberOfQ)
+               $("#q-txt").html("Hva er hovedstaden i " + questionsPool[index].name + "?")
+               $("#anw-inp").val("")
+               $("#quiz-res-txt").html("")
+               $("#next-btn").hide()
+               if (index === questionsPool.length) {
+                    console.log("ferdig");
+                    viewTemp("endQuizTemp", cont);
+                    $("#endScore").html(correct + ' av ' + numberOfQ)
+               }
+          } 
+
+          function restart(){
+               location.reload();
+          }
+
+     </script>
+</html>

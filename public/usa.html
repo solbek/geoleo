@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Usa</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+        <link href="jqvmap-master/dist/jqvmap.css" media="screen" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="jqvmap-master/dist/jquery.vmap.js"></script>
+        <script type="text/javascript" src="jqvmap-master/dist/maps/jquery.vmap.usa.js"></script>
+</head>
+
+<body class="geoleo_body">
+    <div id="mainMenu"></div>
+    <div class="container" style="width: 100%; ">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#usa-home-tab">Om USA</a></li>
+            <li><a href="#usa-countries-tab">Stater</a></li>
+            <li><a href="#usa-capital-tab">hovedstader</a></li>
+            <li><a href="#usa-flag-tab">Flagg</a></li>
+            <li><a href="#usa-map-tab">Kart</a></li>
+        </ul>
+    
+        <div class="tab-content">
+            <div id="usa-home-tab" class="tab-pane fade in active">
+                <p style="margin-top: 20px;">USA, offisielt Amerikas forente stater, er en forbundsrepublikk i Nord-Amerika som består av 50 delstater, <br>pluss
+                Washington, D.C (District of Colombia som er et mindre territorier).<br><br>
+                    <span class="highlight">Høyeste fjell: </span>Denali (Mount McKinley) på 6190 moh, er også Nord-Amerikas høyeste fjell<br>
+                    <span class="highlight">Lengste elv: </span>Missouri River på 4130 km og renner gjennom Montana, Nord-Dakota, Sør-Dakota, Nebraska, Iowa, Missouri, Kansas <br>
+                    <span class="highlight">Funfact</span> Ford, klister, krill, lefse, slalom, uf da er norske ord som fortstt brukes i det amerikanske språket. Detter er
+                    fordi mange tusen nordmenn utvandret til USA ( medt til Minesota) i tidsrommet 1825 - 1920 .
+                </p>
+                <img class="flag-img-sm" src="https://www.verdensflagg.no/data/flags/w580/us.webp">
+            </div>
+    
+            <div id="usa-countries-tab" class="tab-pane fade">
+                <h3 class="tab-head-txt">Alle 50 statene i USA</h3>
+                <div id="usa-states-cont"></div>
+            </div>
+    
+            <div id="usa-capital-tab" class="tab-pane fade">
+                <h3 class="tab-head-txt">hovedstader</h3>
+                <div id="usa-capital-cont"></div>
+            </div>
+    
+            <div id="usa-flag-tab" class="tab-pane fade">
+                <h3 class="tab-head-txt">Flagg</h3>
+                <div class="container-fluid">
+                    <div id="usa-flag-cont" class="row"></div>
+                </div>
+            </div> 
+
+            <div id="usa-map-tab" class="tab-pane fade">
+                <h3 class="tab-head-txt">Kart</h3>
+                <div id="usa-map-cont">
+                    <div id="vmap" style="width: 600px; height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>    
+</body>
+    
+<script>
+/*-------------------- Load main menu -------------------*/
+    $('#mainMenu').load('menu.html', function () {
+        $('#menuTitle').fadeIn().html('USA <span class="caret"></span>')
+    });
+
+/*-------------------- Tabs -------------------*/
+    $(document).ready(function () {
+        $(".nav-tabs a").click(function () {
+            $(this).tab('show');
+        });
+    });
+
+/*-------------------- get data -------------------*/
+    getDataFromDb();
+    var data;
+
+    async function getDataFromDb() {
+        let cfg = {
+            method: "GET",
+            headers: {"Content-Type": "application/json; charset=utf-8"}
+        }
+        try {
+            let response = await fetch(`/app/countries`, cfg);
+            let obj = await response.json();
+            data = obj.filter(a => { return a.category === "Usa" })
+            data.sort((a, b) => a.name.localeCompare(b.name));
+            console.log(data)
+            showUsa(data); showCap(); showFlags(); 
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+/*-------------------- Vis stater -------------------*/
+    function showUsa(val) {
+        var data = val; 
+        for (var i = 0; i < data.length; i++) {
+            document.getElementById("usa-states-cont").innerHTML +=
+            `<label  class="listText">${data[i].name} - ${data[i].capital}</label>
+            <button type="button" class="small-btn" data-toggle="modal" onclick="openModal(${i})" data-target="#myModal">Les mer</button><hr>
+            `
+        }
+        $("#usa-states-cont hr").last().hide()
+    }
+    function openModal(i) {
+        console.log(i)
+        $("#usa-states-cont").append(
+            `<div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+    
+                    <div class="modal-content">
+                        <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">${data[i].name}</h4>
+                        </div>
+                        <div class="modal-body">
+                                <img src="${data[i].flag}" class="flag-img-sm">
+                                <p><span class="highlight">Hovedstat </span>${data[i].capital}</p>
+                                <p><span class="highlight">Code  </span>${data[i].code.toUpperCase()}</span>
+                                <p>${data[i].info}</p>
+                        </div>
+                        <div class="modal-footer"></div>
+                    </div>
+                </div>
+            </div>`);
+        }
+   
+/*-------------------- Hovedsteder -------------------*/
+    function showCap() {
+        var sortCap = data.sort((a, b) => a.capital.localeCompare(b.capital));
+        for (var i = 0; i < sortCap.length; i++) {
+            document.getElementById("usa-capital-cont").innerHTML +=
+                ` <label  class="listText tooltip-txt" data-toggle="tooltip" data-placement="top" title="${data[i].name}">${data[i].capital}</label><br><hr>
+        `}
+        $('[data-toggle="tooltip"]').tooltip();
+        $("#usa-capital-cont hr").last().hide()
+    }
+
+/*-------------------- Vis flagg -------------------*/
+    function showFlags() {
+        for (var i = 0; i < data.length; i++) {
+            document.getElementById("usa-flag-cont").innerHTML +=
+                ` <div class="col-sm-4" style="height:220px">
+            <a data-toggle="tooltip" title="${data[i].name}">
+                <img src="${data[i].flag}" class="flag-img-sm" >
+            </a></div>
+        `}
+        $('[data-toggle="tooltip"]').tooltip();
+    }  
+
+/*-------------------- Map -------------------*/
+    jQuery('#vmap').vectorMap({
+        map: 'usa_en',
+        backgroundColor: '#fff',
+        color: '#c4c4c4',
+        hoverColor: '#ee8610',
+        enableZoom: false,
+        showTooltip: true,
+        selectedColor: '#ee8610',
+        onRegionClick: function (element, code, region) {
+            console.log(code)
+         }
+    });
+
+
+</script>
+    
+</html>
+
