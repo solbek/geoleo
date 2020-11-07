@@ -1,0 +1,26 @@
+{
+  "name": "prosjekt",
+  "version": "1.0.0",
+  "description": "Solveigs eget hjørne",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/solbek/geoleo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/solbek/geoleo/issues"
+  },
+  "homepage": "https://github.com/solbek/geoleo#readme",
+  "dependencies": {
+    "expres": "0.0.5",
+    "express": "^4.16.4",
+    "pg": "^7.6.1",
+    "pg-promise": "^8.5.2"
+  }
+}
