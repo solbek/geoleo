@@ -127,13 +127,13 @@
               var currentSet = data.filter(function (set) {
                 return set.category == continent;
               });
+
+              var currentAll;
               if(continentAll){
-                   var currentAll = data;
                    console.log(continentAll)
-                   /*currentAll = data.filter(function (set) {
-                        return set.category == continent;
-                });  */
+                   currentSet = data;                   
               }
+              console.log(currentSet)
               var shuffled = currentSet.sort(() => 0.5 - Math.random())// Shuffle array
               questionsPool = shuffled.slice(0, numberOfQ)
               console.log(questionsPool)
