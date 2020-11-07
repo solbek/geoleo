@@ -22,7 +22,7 @@
           <template id="startQuizTemp">
                <p>Spør etter:</p>
                <div id="quizRadioBtn">
-                    <label class="container">hovedstad
+                    <label class="container">Hovedstad
                          <input id="capitalRadio" type="radio" name="selectQuizType" value="capital">
                          <span class="checkmark"></span>
                     </label>
@@ -39,7 +39,7 @@
                          <li class="continentChoice"><a class="continent">Europa</a></li>
                          <li class="continentChoice"><a class="continent">Asia</a></li>
                          <li class="continentChoice"><a class="continent">USA (kommer)</a></li>
-                         <li class="continentChoice"><a id="continentAll" >Alle (Kommer)</a></li>
+                         <li class="continentChoice"><a id="continentAll" >Alle</a></li>
                     </ul>
                </div>
           </template>
@@ -80,13 +80,6 @@
           }
 
           viewTemp("startQuizTemp", cont);
-
-           /*$("input[type='radio']").click(function () {
-              var radioValue = $("input[name='selectQuizType']:checked").val();
-              if (radioValue) {
-                alert("Your are a - " + radioValue);
-              }
-            }) */
 
           var radioVal;
           var continent;
@@ -134,19 +127,13 @@
               var currentSet = data.filter(function (set) {
                 return set.category == continent;
               });
-
-              
-
-              //console.log(currentSet)
-          
-              var currentAll = data;
-              /*if(continentAll){
-                console.log(continentAll)
-                currentAll = data.filter(function (set) {
-                  return set.category == continent;
-                });  
-              }*/
-
+              if(continentAll){
+                   var currentAll = data;
+                   console.log(continentAll)
+                   /*currentAll = data.filter(function (set) {
+                        return set.category == continent;
+                });  */
+              }
               var shuffled = currentSet.sort(() => 0.5 - Math.random())// Shuffle array
               questionsPool = shuffled.slice(0, numberOfQ)
               console.log(questionsPool)
