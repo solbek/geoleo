@@ -101,10 +101,10 @@
      function sendCountryToDb() {
           x = 1
           countMe = 2;
-          $("#countMe").html(countMe + "/" + (countries.length - 1));          
+          /*$("#countMe").html(countMe + "/" + (countries.length - 1));          
           $('#inp-country').val(countries[x].name);
           $('#inp-cap').val(countries[x].capital);
-         console.log(x)
+         console.log(x)*/
 
           let name = $('#inp-country').val();
           let cat = $('#inp-cat').val();
@@ -114,7 +114,7 @@
           let cur = $('#inp-currency').val(); 
           let code = $('#inp-code').val();
           console.log(name)
-          if (name.length > 1 && capital.length > 1) {
+         /* if (name.length > 1 && capital.length > 1){
                let request = {
                     method: "POST",
                     body: JSON.stringify({
@@ -137,10 +137,10 @@
                          return data.json();
                          console.log(data)
                     }
-               }).catch(err => {
+               }).catch(err => {   
                     console.error(err);
                });
-          }   
+          }  */
           console.log(cur);         
           countMe++
           x++
