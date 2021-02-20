@@ -16,9 +16,7 @@ module.exports.db = db; //db connection
 module.exports.ps = ps; //prepared sql statements*/
 
 const pg = require("pg");
-
 const { Client } = require('pg');
-
 let connectionString = process.env.DATABASE_URL;
 
 connectionString += "?ssl=true";
@@ -57,5 +55,23 @@ async function runQuery(query) {
   }
 
   return respons;
-
 }
+
+db.insert = async function (query) {
+  return await runQuery(query);
+}
+
+db.select = async function (query) {
+  return await runQuery(query);
+}
+
+db.delete = async function (query) {
+  //db.update(query);
+  return await runQuery(query);
+}
+
+db.update = async function (query) {
+  return await runQuery(query);
+}
+
+module.exports = db;
