@@ -1,10 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-let connectionString = process.env.DATABASE_URL;
-//const db = require("./js/db.js");  
 const pgp = require('pg-promise')();
-const db = pgp(connectionString);
+const db = require("./js/db.js");  
 //const db = pgp('postgres://postgres:aa@localhost:5432/geoleo');
 
 const user = require("./js/user.js"); 
