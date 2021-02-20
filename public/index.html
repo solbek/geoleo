@@ -59,17 +59,23 @@
         jQuery('#vmap').vectorMap({
           map: 'world_en',
           backgroundColor: '#ffffff',
-          color: '#ffffff',
-          hoverOpacity: 1,
-          selectedColor: '#ee8610',
+          color:'#f7c388',
+          //selectedColor: '#ee8610',
+          hoverColor: '#ee8610',
           borderColor: '#ffffff',
-          colors: test,
           enableZoom: false,
           showTooltip: true,
+         /*onRegionOver: function (element, code, region) {
+            highlightRegionOfCountry(code);
+            console.log(region)
+          },
+          onRegionOut: function (element, code, region) {
+            unhighlightRegionOfCountry(code);
+          },*/
           onRegionClick: function (element, code, region) {           
               if (countryMap[code] == "Asia") {
                 console.log(countryMap[code] )
-                window.location.href = "asia.html"
+                //window.location.href = "asia.html"
               }
               if (countryMap[code] == "Africa") {
                 console.log(countryMap[code])
