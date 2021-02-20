@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const app = express();
 //const db = require("./js/db.js");  
 const pgp = require('pg-promise')();
-const db = pgp('postgres://postgres:aa@localhost:5432/geoleo');
+const db = pgp('postgres://dqcrocscswtrkw:b0aaee43030ab3b981fa49980500a5896ab341b557f2e8b3f8f2830a15878209@ec2-54-155-226-153.eu-west-1.compute.amazonaws.com:5432/d5mbjdtg5od5rv');
+//const db = pgp('postgres://postgres:aa@localhost:5432/geoleo');
 // -----------------------------------------------
 //route handling is delegated to:
 /*var travels = require('./travels.js');
