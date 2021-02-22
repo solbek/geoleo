@@ -110,6 +110,17 @@ app.post('/app/change', async function (req, res, next) {
 });
 
 //-------------------- GET DATA --------------------------------
+app.get('/app/testMe', async function (req, res) {
+    let query = `SELECT * FROM public."countries";`;
+    try {
+        let result = await db.any(query);
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(500).json({ error: err });
+    }
+});
+
+//-------------------- GET DATA --------------------------------
 app.get('/app/countries', async function (req, res) {
     let query = `SELECT * FROM public."countries";`;
     try {
