@@ -111,7 +111,7 @@ app.post('/app/change', async function (req, res, next) {
 
 //-------------------- GET DATA --------------------------------
 app.get('/app/testMe', async function (req, res) {
-    let query = `SELECT * FROM public."countries";`;
+    let query = `SELECT * FROM public."allcountries";`;
     try {
         let result = await db.any(query);
         res.status(200).json(result);
