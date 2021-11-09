@@ -93,7 +93,7 @@
             let response = await fetch(`/app/countries`, cfg);
             let obj = await response.json();
             data = obj.filter(a => { return a.category === "europa" })
-            data.sort((a, b) => a.name.localeCompare(b.name));
+            /*data.sort((a, b) => a.name.localeCompare(b.name));*/
             console.log(data)
             showEuropa(data); showFlags(); showCap();
             
