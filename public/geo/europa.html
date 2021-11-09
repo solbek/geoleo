@@ -94,7 +94,7 @@
             let obj = await response.json();
             data = obj.filter(a => { return a.category === "europa" })
             /*data.sort((a, b) => a.name.localeCompare(b.name));*/
-            console.log(data)
+            console.log("her er landene: " + data)
             showEuropa(data); showFlags(); showCap();
             
        } catch (err) {
