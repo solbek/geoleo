@@ -4,7 +4,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>GeoLeo</title>
+  <title>Hallo</title>
   <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -16,158 +16,17 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
   <script src="https://germini.info/js/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>
   <script src="https://germini.info/js/jqvmap/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
-  <!--<script src="https://germini.info/js/jqvmap/jqvmap/maps/jquery.vmap.continents.js" type="text/javascript"></script>-->
   <script src="jqvmap-master/worldContinents.js"></script>
   <script src="https://germini.info/js/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>
   <script src="https://germini.info/js/jqvmap/jqvmap/data/jquery.vmap.programdata.js" type="text/javascript"></script>
 </head>
 
-<div id="front-page"></div>
+<body>
+Hallo
+<h3><a href="/geo/geoFrontpage.html">GeoLeo</a></h3>
+<h3><a href="/sunny/sunnyFrontpage.html">SunnyRoad</a></h3>
 
-<body class="geoleo_body">
-
-  <!--<div id="view-login">
-    <p id="login-msg"></p>
-    <input id="login-username-inp" placeholder="Brukernavn">
-    <input id="login-psw-inp" placeholder="Passord">
-    <button id="login-btn">Logg inn</button>
-  </div>-->  
-  <!--<img id="index-img" src="img/worldmap.jpg">  
-  <div id="vmap" style="width: 600px; height: 400px;"></div>-->
-
-  <div id="mainMenu"></div>
-    <div id="vmap" style="width: 600px; height: 400px;">
-
-    </div>
-<style>
-  #menuTitle {
-    display: none !important;
-
-  }
-</style>
 </body>
-
-<script>
-  
-  /*-------------------- Load main menu -------------------*/
- $('#mainMenu').load('menu.html', function () {
-    $('#menuTitle').fadeIn().html('Hjem <span class="caret"></span>')
-    $(".dropdown-menu").fadeIn().hide()
-  });
-  
-  /*-------------------- Map -------------------*/
-
-	jQuery(document).ready(function() {
-        jQuery('#vmap').vectorMap({
-          map: 'world_en',
-          backgroundColor: '#ffffff',
-          color:'#f7c388',
-          //selectedColor: '#ee8610',
-          hoverColor: '#ee8610',
-          borderColor: '#ffffff',
-          enableZoom: false,
-          showTooltip: true,
-         /*onRegionOver: function (element, code, region) {
-            highlightRegionOfCountry(code);
-            console.log(region)
-          },
-          onRegionOut: function (element, code, region) {
-            unhighlightRegionOfCountry(code);
-          },*/
-          onRegionClick: function (element, code, region) {           
-              if (countryMap[code] == "Asia") {
-                console.log(countryMap[code] )
-                window.location.href = "asia.html"
-              }
-              if (countryMap[code] == "Africa") {
-                console.log(countryMap[code])
-                alert("Kommer snart!")
-              }
-              if (countryMap[code] == "Europe") {
-              console.log(countryMap[code])  
-              window.location.href = "europa.html"
-              }
-              if (countryMap[code] == "northAmerica") {
-                console.log(countryMap[code])
-                window.location.href = "usa.html"
-              }
-              if (countryMap[code] == "Australia") {
-                console.log(countryMap[code])
-                alert("Kommer snart!")
-              }
-              if (countryMap[code] == "southAmerica") {
-                console.log(countryMap[code])
-                alert("Kommer snart!")
-              }            
-          }
-        });
-	});
-
-
-
-  /*function get(id) {
-    return document.getElementById(id);
-  }
-
-  function setView(id, cont) {
-    cont.innerHTML = "";
-    let templ = document.getElementById(id);
-    let clone = templ.content.cloneNode(true);
-    cont.appendChild(clone);
-  }*/
-
-
- /* onload = function () {
-    setView("front-page", cont);
-    setView("view-login", cont);
-    get("login-btn").onclick = loginHere;
-  }*/
-
-
-
-  /*-------------------- Login -------------------*/
-  /*function loginHere(evt) {
-    evt.preventDefault();
-    console.log("Login bt clicked");
-
-    let userName = get("login-username-inp").value;
-    let password = get("login-psw-inp").value;
-
-    if (userName.length > 1 && password.length > 1) {
-
-      let request = {
-        method: "POST",
-        body: JSON.stringify({
-          userName: userName,
-          password: password
-        }),
-        headers: {
-          "Content-Type": "application/json; charset=utf-8"
-        }
-      }
-      fetch(`/app/login`, request).then(data => {
-        if (data.status === 200) {
-          return data.json();
-        }
-        else if (data.status === 401) {
-          get("login-msg").innerHTML += "Feil brukernavn eller passord";
-        } else {
-          return new PromiseRejectionEvent();
-        }
-
-      }).then(json => {
-        // User is logged in.
-        authenticatedUser = json;
-
-        //console.log(id);
-        //localStorage.setItem("token", json.token);
-        localStorage.setItem("userName", userName);
-        localStorage.setItem("id", json.id);
-      })
-      }
-  }*/
-
-</script>
 
 
 </html>

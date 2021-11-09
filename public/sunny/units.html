@@ -1,0 +1,94 @@
+ 
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Units</title>
+  <link rel="stylesheet" type="text/css" href="../style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+    <body class="sunny_body">
+      <div id="mainMenu"></div>
+      <div class="container" style="width: 100%;">
+        <ul class="nav nav-tabs sunny-nav-tabs">
+          <li class="active"><a href="#unit-valuta-tab">Valutakalkulator</a></li>
+          <li><a href="#unit-volum-tab">Volum</a></li>
+          <li><a href="#unit-avstand-tab">Avstand</a></li>
+          <li><a href="#unit-vekt-tab">Vekt</a></li>
+        </ul>
+
+        <div class="tab-content">
+          <div id="unit-valuta-tab" class="tab-pane fade in active">
+            <h3 class="tab-head-txt">Valutakalkulator</h3>
+            <div id="unit-valuta-cont">
+
+              <input id="inp-from-value" class="input-sm" type="number"><br>
+
+              <select id="inp-from-valuta" class="input-sm">
+                <option value="usd">Amerikansk dollar</option>
+                <option value="euro">Euro</option>
+                <option value="nok">Norsk krone</option>
+              </select> til            
+
+              <select id="inp-to-valuta" class="input-sm">
+                <option value="nok">Norsk krone</option>
+                <option value="usd">Amerikanske dollar</option>
+                <option value="euro">Euro</option>                
+              </select>
+              <h4 id="valuta-result"></h4>
+              <button id="btn-convert-valuta" class="normal-btn sunny-btn" onclick="valuta()">Konverter</button>
+            </div>
+          </div>
+        
+          <div id="unit-volum-tab" class="tab-pane fade">
+            <h3 class="tab-head-txt">Volum</h3>
+            <div id="unit-volum-cont"></div>
+          </div>
+        
+          <div id="unit-avstand-tab" class="tab-pane fade">
+            <h3 class="tab-head-txt">Avstand</h3>
+            <div id="unit-avstand-cont"></div>
+          </div>
+
+          <div id="unit-vekt-tab" class="tab-pane fade">
+            <h3 class="tab-head-txt">Vekt</h3>
+            <div id="unit-vekt-cont"></div>
+          </div>
+      </div>
+
+    </body>
+    <style>
+      .input-sm {width: 160px;}
+    </style>
+    <script>
+      /*-------------------- Load main menu -------------------*/
+      $('#mainMenu').load('sunnyMenu.html', function () {
+        $('#menuTitle').fadeIn().html('Units <span class="caret"></span>')
+      });
+
+      /*-------------------- Tabs -------------------*/
+      $(document).ready(function () {
+        $(".nav-tabs a").click(function () {
+          $(this).tab('show');
+        });
+      });
+      /*-------------------- Valuta -------------------*/
+      function valuta() {
+        if($('#inp-from-valuta').val() == "usd" && $('#inp-to-valuta').val() == "nok"){
+          var res= $('#inp-from-value').val() * 8.37
+          $('#valuta-result').html(res + $('#inp-to-valuta').val())
+        }
+
+        if($('#inp-from-valuta').val() == "euro" && $('#inp-to-valuta').val() == 'nok'){
+          var res = $('#inp-from-value').val() * 10.03
+          $('#valuta-result').html(res + $('#inp-to-valuta').val())
+        }
+
+      }
+
+
+    </script>
+</html>
