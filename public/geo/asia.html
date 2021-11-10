@@ -80,7 +80,7 @@
             let obj = await response.json();
             data = obj.filter(a => {return a.category === "Asia"})
             data.sort((a, b) => a.name.localeCompare(b.name));
-            console.log(data)
+            console.log(obj)
             showAsia(data); showFlags(); showCap();
 
         } catch (err) {
