@@ -76,10 +76,10 @@
             }
         }
         try {
-            let response = await fetch(`/app/testMe`, cfg);
+            let response = await fetch(`/app/countries`, cfg);
             let obj = await response.json();
-            data = obj.filter(a => {return a.category === "Asia"})
-            data.sort((a, b) => a.name.localeCompare(b.name));
+           /* data = obj.filter(a => {return a.category === "Asia"})
+            data.sort((a, b) => a.name.localeCompare(b.name));*/
             console.log(obj)
             showAsia(data); showFlags(); showCap();
 
