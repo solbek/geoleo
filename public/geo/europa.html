@@ -92,10 +92,10 @@
       try {    
             let response = await fetch(`/app/countries`, cfg);
             let obj = await response.json();
-            data = obj.filter(a => { return a.category === "europa" })
+           // data = obj.filter(a => { return a.category === "europa" })
             /*data.sort((a, b) => a.name.localeCompare(b.name));*/
-            console.log("her er landene: " + data)
-            showEuropa(data); showFlags(); showCap();
+            console.log("her er landene: " + obj)
+            //showEuropa(data); showFlags(); showCap();
             
        } catch (err) {
            console.log(err);
@@ -103,7 +103,7 @@
     }
 
 /*-------------------- Vis land -------------------*/
-    function showEuropa(val){
+    /*function showEuropa(val){
         var data = val;
         for (var i = 0;  i < data.length ;  i++) {
            document.getElementById("euro-countries-cont").innerHTML += 
@@ -135,10 +135,10 @@
                         </div>
                     </div>
             </div>`);
-    }
+    }*/
 
 /*-------------------- Hovestater -------------------*/
-    function showCap(){
+    /*function showCap(){
         var sortCap = data.sort((a, b) => a.capital.localeCompare(b.capital));
         for (var i = 0; i < sortCap.length; i++) {
             document.getElementById("euro-capital-cont").innerHTML +=
@@ -146,11 +146,11 @@
         `}
         $('[data-toggle="tooltip"]').tooltip();
         $("#euro-capital-cont hr").last().hide()
-    }
+    }*/
     
 
 /*-------------------- Vis flagg -------------------*/
-    function showFlags() {
+    /*function showFlags() {
         for (var i = 0; i < data.length; i++) {
             document.getElementById("euro-flag-cont").innerHTML +=
                 ` <div class="col-sm-4" style="height:220px">
@@ -159,10 +159,10 @@
             </a></div>
         `}
         $('[data-toggle="tooltip"]').tooltip();
-    }
+    }*/
 
 /*-------------------- Map -------------------*/
-    jQuery('#vmap').vectorMap({
+    /*jQuery('#vmap').vectorMap({
         map: 'europe_en',
         backgroundColor: '#fff',
         color: '#c4c4c4',
@@ -170,7 +170,7 @@
         enableZoom: false,
         showTooltip: true,
         selectedColor: '#ee8610',
-    });
+    });*/
 </script>
     
 </html>
